@@ -11,6 +11,13 @@ Docker's swarm mode introduces the following concepts in top down hierarchical o
      
 
 The following docker swarm commands(and their corresponding outputs) were used to deploy and inspect the deployed containers:
+*It is worth pointing out that the swarm commands need to be executed either on the actual nodes which are part of the swarm or (if executing remotely)the remote client should point to a docker daemon running on one of the swarm nodes. In commands below, I'd used the latter approach, hence my local docker client on Macbook was pointing to the docker daemon on the swarm node(with manager role).This could be achieved by setting the following env vars on my Mac.*
+```
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://192.168.99.100:2376"
+export DOCKER_CERT_PATH="/Users/niteshsinha/.docker/machine/machines/myvm1"
+export DOCKER_MACHINE_NAME="myvm1"
+``` 
 ## Add a node(with role as manager) to the docker swarm. 
 Note that this command has to be executed on the node which has to be become a "manager" node in the swarm.
 ```
@@ -87,6 +94,20 @@ an6cbxbwx663        mynodeapp_myweb.1   niteshks/swarm-app:1.0   linuxkit-025000
 jtlu61lseimv        mynodeapp_myweb.2   niteshks/swarm-app:1.0   linuxkit-025000000001   Running             Running about a minute ago                       
 vd90fm2qyjyz        mynodeapp_myweb.3   niteshks/swarm-app:1.0   linuxkit-025000000001   Running             Running about a minute ago                       
 hh5lvrfew62j        mynodeapp_myweb.4   niteshks/swarm-app:1.0   linuxkit-025000000001   Running             Running about a minute ago                       
+```
+
+## Bring down the node(by setting its availability in swarm) such that the tasks running on it is moved off of it by the mansger node
+```
+docker@myvm2:~$ docker node update --availability drain myvm2
+myvm2
+```
+Note that if the manager node's availability is set ot "drain" and if that happens to be the only manager, then all tasks on it is still moved to other available nodes. This means that "drain" mode does not shut down manager service on the node. It only updates the manager's list of available nodes for task scheduling. 
+
+
+## Set it back to active state so new tasks can be launched on it.
+```
+docker@myvm2:~$ docker node update --availability active myvm2
+myvm2
 ```
 
 ## Remove the docker swarm stack
