@@ -11,6 +11,7 @@ Docker's swarm mode introduces the following concepts in top down hierarchical o
      
 
 The following docker swarm commands(and their corresponding outputs) were used to deploy and inspect the deployed containers:
+
 *It is worth pointing out that the swarm commands need to be executed either on the actual nodes which are part of the swarm or (if executing remotely)the remote client should point to a docker daemon running on one of the swarm nodes. In commands below, I'd used the latter approach, hence my local docker client on Macbook was pointing to the docker daemon on the swarm node(with manager role).This could be achieved by setting the following env vars on my Mac.*
 ```
 export DOCKER_TLS_VERIFY="1"
