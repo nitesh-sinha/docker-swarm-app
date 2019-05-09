@@ -97,7 +97,7 @@ vd90fm2qyjyz        mynodeapp_myweb.3   niteshks/swarm-app:1.0   linuxkit-025000
 hh5lvrfew62j        mynodeapp_myweb.4   niteshks/swarm-app:1.0   linuxkit-025000000001   Running             Running about a minute ago                       
 ```
 
-## Bring down the node(by setting its availability in swarm) such that the tasks running on it is moved off of it by the mansger node
+## Bring down the node(by setting its availability in swarm) such that the tasks running on it is moved off of it by the manager node
 ```
 docker@myvm2:~$ docker node update --availability drain myvm2
 myvm2
